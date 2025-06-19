@@ -6,6 +6,5 @@ class Main {
     	String[] processingArgs = {"Fracture"};
 		Fracture mySketch = new Fracture();
 	    PApplet.runSketch(processingArgs, mySketch);
-		PApplet.main("Fracture");
 	}
 }
