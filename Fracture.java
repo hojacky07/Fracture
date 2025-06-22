@@ -8,19 +8,22 @@ public class Fracture extends PApplet{
     Player player;
     PlayerHitbox playerHitbox;
     HashMap<String, PImage[]> playerAnimations = new HashMap<>();
+    PImage background;
     PImage[] playerIdle = new PImage[1];
     PImage[] playerJump = new PImage[1]; 
     PImage[] playerAttack = new PImage[4];
     PImage[] playerRun = new PImage[4];
 
     public void settings() {
-        size(640, 640);
+        size(640, 360);
         noSmooth();
     }
 
     public void setup() {
         playerHitbox = new PlayerHitbox(width / 2f, height / 2f, this);
         player = new Player(width / 2f, height / 2f, this, playerAnimations, playerHitbox);
+
+        background = loadImage("background/background.png");
 
         playerIdle[0] = loadImage("player/idle.png");
         playerAnimations.put("idle", playerIdle);
@@ -40,7 +43,7 @@ public class Fracture extends PApplet{
     }
 
     public void draw() {
-        background(200);
+        background(background);
         playerHitbox.update();
         playerHitbox.display();
         player.update();

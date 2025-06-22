@@ -25,11 +25,11 @@ public class PlayerHitbox {
     public void update() {
 
         vy += gravity;
-        vy = player.constrain(vy, -20, 10);
+        vy = player.constrain(vy, -10, 5);
         y += vy;
 
-        if (y >= player.height - 60) {
-            y = player.height - 60;
+        if (y >= player.height - 30) {
+            y = player.height - 30;
             vy = 0;
             onGround = true;
         } else {
@@ -43,14 +43,14 @@ public class PlayerHitbox {
             x += speed;
         }
 
-        x = player.constrain(x, 0, player.width - 35);
-        y = player.constrain(y, 60, player.height);
+        x = player.constrain(x, 0, player.width - 21);
+        y = player.constrain(y, 30, player.height);
     }
 
     public void display() {
         player.imageMode(PApplet.CENTER);
         player.fill(255, 0, 0);
-        player.rect(x, y, 35, 60);
+        player.rect(x, y, 15.5f, 30);
     }
 
     public void keyPressed(char key, int keyCode) {
