@@ -7,6 +7,7 @@ public class PlayerHitbox {
     float x, y;
     float speed = 3;
     boolean left, right;
+    boolean leftScroll, rightScroll;
     String direction = "";
 
 
@@ -22,7 +23,9 @@ public class PlayerHitbox {
         this.player = player;
     }
 
-    public void update() {
+    public void update(float offsetX) {
+        leftScroll = left;
+        rightScroll = right;
 
         vy += gravity;
         vy = player.constrain(vy, -10, 5);
@@ -37,10 +40,17 @@ public class PlayerHitbox {
         }
 
         if (left == true) {
-            x -= speed;
+            if (offsetX < 1) {
+                x -= speed;
+            }
         }
+
         if (right == true) {
-            x += speed;
+            if (x < player.width / 2) {
+                x += speed;
+            } else {
+                x = player.width / 2;
+            }
         }
 
         x = player.constrain(x, 0, player.width - 21);

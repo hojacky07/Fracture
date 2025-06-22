@@ -8,7 +8,7 @@ public class Fracture extends PApplet{
     Player player;
     PlayerHitbox playerHitbox;
     HashMap<String, PImage[]> playerAnimations = new HashMap<>();
-    PImage background;
+    Background background;
     PImage[] playerIdle = new PImage[1];
     PImage[] playerJump = new PImage[1]; 
     PImage[] playerAttack = new PImage[4];
@@ -20,10 +20,8 @@ public class Fracture extends PApplet{
     }
 
     public void setup() {
-        playerHitbox = new PlayerHitbox(width / 2f, height / 2f, this);
-        player = new Player(width / 2f, height / 2f, this, playerAnimations, playerHitbox);
-
-        background = loadImage("background/background.png");
+        playerHitbox = new PlayerHitbox(23 - 22, height / 2f, this);
+        player = new Player(23, height / 2f, this, playerAnimations, playerHitbox);
 
         playerIdle[0] = loadImage("player/idle.png");
         playerAnimations.put("idle", playerIdle);
@@ -40,18 +38,24 @@ public class Fracture extends PApplet{
             playerRun[i] = loadImage("player/run" + (i + 1) + ".png");
         }
         playerAnimations.put("run", playerRun);
+
+        background = new Background(this);
     }
 
     public void draw() {
-        playerHitbox.update();
+        playerHitbox.update(background.offsetX);
         playerHitbox.display();
-        background(background);
+        background.update(playerHitbox.x,playerHitbox.leftScroll, playerHitbox.rightScroll);
+        background.display();
         player.update();
         player.display();
     }
 
     public void keyPressed() {
         playerHitbox.keyPressed(key, keyCode);
+        if (key == 'q' || key == 'Q') {
+           System.out.println(background.offsetX);
+        }
     }
 
     public void keyReleased() {
