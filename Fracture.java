@@ -6,6 +6,7 @@ import java.util.HashMap;
 public class Fracture extends PApplet{
 
     Player player;
+    PlayerHitbox playerHitbox;
     HashMap<String, PImage[]> playerAnimations = new HashMap<>();
     PImage[] playerIdle = new PImage[1];
     PImage[] playerJump = new PImage[1]; 
@@ -13,12 +14,13 @@ public class Fracture extends PApplet{
     PImage[] playerRun = new PImage[4];
 
     public void settings() {
-        size(500, 500);
+        size(640, 640);
         noSmooth();
     }
 
     public void setup() {
-        player = new Player(width / 2f, height / 2f, this, playerAnimations);
+        playerHitbox = new PlayerHitbox(width / 2f, height / 2f, this);
+        player = new Player(width / 2f, height / 2f, this, playerAnimations, playerHitbox);
 
         playerIdle[0] = loadImage("player/idle.png");
         playerAnimations.put("idle", playerIdle);
@@ -39,15 +41,17 @@ public class Fracture extends PApplet{
 
     public void draw() {
         background(200);
+        playerHitbox.update();
+        playerHitbox.display();
         player.update();
         player.display();
     }
 
     public void keyPressed() {
-        player.keyPressed(key, keyCode);
+        playerHitbox.keyPressed(key, keyCode);
     }
 
     public void keyReleased() {
-        player.keyReleased(key, keyCode);
+        playerHitbox.keyReleased(key, keyCode);
     }
 }

@@ -5,7 +5,13 @@ import processing.core.PImage;
 public class Player {
     float x, y;
     float speed = 5;
-    boolean up, down, left, right;
+    boolean left, right;
+    String direction = "";
+
+
+    float vy = 0;
+    float gravity = 0.5f;
+    boolean onGround = false;
 
     PApplet player;
 
@@ -15,31 +21,22 @@ public class Player {
     int frameDelay = 5;
     int frameCounter = 0;
 
-    public Player(float x, float y, PApplet player, HashMap<String, PImage[]> playerAnimations) {
+    PlayerHitbox playerHitbox;
+    
+
+    public Player(float x, float y, PApplet player, HashMap<String, PImage[]> playerAnimations, PlayerHitbox playerHitbox) {
         this.x = x;
         this.y = y;
         this.player = player;
         this.playerAnimations = playerAnimations;
+        this.playerHitbox = playerHitbox;
     }
 
     public void update() {
-        if (up == true) {
-            y -= speed;
-        }
-        if (down == true) {
-            y += speed;
-        }
-        if (left == true) {
-            x -= speed;
-        }
-        if (right == true) {
-            x += speed;
-        }
 
-        x = player.constrain(x, 19 / 2, player.width - 19 / 2);
-        y = player.constrain(y, 13 / 2, player.height - 13 / 2);
-
-        if (up || down || left || right) {
+        if (!onGround) {
+            setState("jump");
+        } else if ((left || right) && onGround) {
             setState("run");
         } else {
             setState("idle");
@@ -58,13 +55,21 @@ public class Player {
     }
 
     public void display() {
+
+        x = playerHitbox.x + 48;
+        y = playerHitbox.y + 28;
+        this.direction = playerHitbox.direction;
+        this.onGround = playerHitbox.onGround;
+        this.left = playerHitbox.left;
+        this.right = playerHitbox.right;
+
         player.imageMode(PApplet.CENTER);
         PImage currentFrame = playerAnimations.get(currentState)[frame];
 
         player.pushMatrix();
         player.translate(x, y);
 
-        if (left && !right) {
+        if (direction == "left") {
             player.translate(-64, 0);
             player.scale(-1, 1); 
             player.image(currentFrame, 0, 0);
@@ -73,66 +78,6 @@ public class Player {
         }
 
         player.popMatrix();
-    }
-
-    public void keyPressed(char key, int keyCode) {
-        if (key == PApplet.CODED) {
-            if (keyCode == PApplet.UP) {
-                up = true;
-            }
-            if (keyCode == PApplet.DOWN) {
-                down = true;
-            }
-            if (keyCode == PApplet.LEFT) {
-                left = true;
-            }
-            if (keyCode == PApplet.RIGHT) {
-                right = true;
-            }
-        } else {
-            if (key == 'w' || key == 'W') {
-                up = true;
-            }
-            if (key == 's' || key == 'S') {
-                down = true;
-            }
-            if (key == 'a' || key == 'A') {
-                left = true;
-            }
-            if (key == 'd' || key == 'D') {
-                right = true;
-            }
-        }
-    }
-
-    public void keyReleased(char key, int keyCode) {
-        if (key == PApplet.CODED) {
-            if (keyCode == PApplet.UP) {
-                up = false;
-            }
-            if (keyCode == PApplet.DOWN) {
-                down = false;
-            }
-            if (keyCode == PApplet.LEFT) {
-                left = false;
-            }
-            if (keyCode == PApplet.RIGHT) {
-                right = false;
-            }
-        } else {
-            if (key == 'w' || key == 'W') {
-                up = false;
-            }
-            if (key == 's' || key == 'S') {
-                down = false;
-            }
-            if (key == 'a' || key == 'A') {
-                left = false;
-            }
-            if (key == 'd' || key == 'D') {
-                right = false;
-            }
-        }
     }
 
     public void setState(String state) {
