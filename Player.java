@@ -4,7 +4,6 @@ import processing.core.PImage;
 
 public class Player {
     float x, y;
-    float speed = 1.25f;
     boolean left, right;
     String direction = "";
 
@@ -56,7 +55,7 @@ public class Player {
 
     public void display() {
 
-        x = playerHitbox.x + 24;
+        x = playerHitbox.x + 22;
         y = playerHitbox.y + 14;
         this.direction = playerHitbox.direction;
         this.onGround = playerHitbox.onGround;
@@ -70,7 +69,7 @@ public class Player {
         player.translate(x, y);
 
         if (direction == "left") {
-            player.translate(-32, 0);
+            player.translate(-30, 0);
             player.scale(-0.5f, 0.5f); 
             player.image(currentFrame, 0, 0);
         } else {

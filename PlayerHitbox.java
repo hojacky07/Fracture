@@ -5,7 +5,7 @@ import processing.core.PImage;
 
 public class PlayerHitbox {
     float x, y;
-    float speed = 5;
+    float speed = 3;
     boolean left, right;
     String direction = "";
 
@@ -45,12 +45,19 @@ public class PlayerHitbox {
 
         x = player.constrain(x, 0, player.width - 21);
         y = player.constrain(y, 30, player.height);
+
+        if (left && !right) {
+            direction = "left";
+        } else if (right && !left) {
+            direction = "right";
+        }
     }
 
     public void display() {
         player.imageMode(PApplet.CENTER);
+        player.noStroke();
         player.fill(255, 0, 0);
-        player.rect(x, y, 15.5f, 30);
+        player.rect(x, y, 14.5f, 30);
     }
 
     public void keyPressed(char key, int keyCode) {

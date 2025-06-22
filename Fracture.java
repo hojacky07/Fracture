@@ -43,9 +43,9 @@ public class Fracture extends PApplet{
     }
 
     public void draw() {
-        background(background);
         playerHitbox.update();
         playerHitbox.display();
+        background(background);
         player.update();
         player.display();
     }
